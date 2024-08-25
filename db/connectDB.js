@@ -6,7 +6,7 @@ export const connectDB = async() => {
         const connectionInstance = await mongoose.connect(
             "mongodb+srv://urvashidhawan:<password>@cluster0.ulelx.mongodb.net/test"
         )
-        mongoose.connect("mongodb+srv://urvashidhawan:<password>@cluster0.ulelx.mongodb.net/test")
+        mongoose.connect("mongodb+srv://urvashidhawan:Urvi123@cluster0.ulelx.mongodb.net/test")
         console.log("Mongodb connected...",connectionInstance.connection.host );
     } catch(error) {
         console.log("error connecting to mongodb");
