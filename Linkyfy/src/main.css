@@ -1,0 +1,44 @@
+/* Global styles */
+body {
+    font-family: 'Arial', sans-serif;
+  }
+  
+  .app-container {
+    display: flex;
+    height: 100vh;
+  }
+  
+  .chat-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .message {
+    padding: 10px;
+    border-radius: 5px;
+  }
+  
+  input[type="text"] {
+    border: 1px solid #ddd;
+  }
+  
+  button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 5px;
+  }
+  
+  button:hover {
+    background-color: #45a049;
+  }
+  
+  .messages {
+    padding: 20px;
+    overflow-y: scroll;
+    flex-grow: 1;
+  }
+  
