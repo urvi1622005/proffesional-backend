@@ -23,7 +23,7 @@ const App = () => {
     <div className="app-container flex">
       <Navbar />
       <Sidebar />
-      <Chat/>
+      {/* <Chat/> */}
       <Login/>
       <Message/>
       
