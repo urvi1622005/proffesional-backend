@@ -1,6 +1,7 @@
 import express from 'express';
 import dotenv from 'dotenv';
 import { connectDb } from './db/connectDb.js';
+const router =express.Router();
 
 dotenv.config();
 
@@ -8,7 +9,6 @@ const app = express();
 const Port = 3000;
 
 // Connect to the database
-connectDb();
 
 // Define a simple route
 app.get('/blog', (req, res) => {
@@ -16,12 +16,12 @@ app.get('/blog', (req, res) => {
 });
 
 // Use a router (future-proofing for API routes)
-const router = express.Router();
-router.get('/test', (req, res) => {
-    res.status(200).json({ message: "API is working" });
-});
-app.use("/api/v1", router);
 
+// router.get('/test', (req, res) => {
+//     res.status(200).json({ message: "API is working" });
+
+app.use("/api/v1", router);
+connectDb();
 // Start the server
 app.listen(Port, () => {
     console.log(`Server is running at: http://localhost:${Port}`);
