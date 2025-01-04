@@ -1,7 +1,9 @@
-const express = require("express");
-const dotenv = require("dotenv");
-const connectDB = require("./db/connectDb.js");
-
+import express from "express";
+import { connectDB } from "./db/connectDB.js";
+import dotenv from"dotenv";
+import userRouter from "./routes/userRouter.js";
+import postRouter from "./routes/postRouter.js";
+import cookieParser from "cookie-parser";
 dotenv.config();
 const app = express();
 const PORT = 3000;
@@ -9,26 +11,12 @@ const PORT = 3000;
 app.use(express.json());
 
 
-app.get("/video", (req, res) => {
-  res.status(200).json({ message: "db is connected" });
-});
+app.use(express.json({ extended: true }));
+app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
 
-
-app.post("/video", (req, res) => {
-  const { title, description, url } = req.body;
-
-  
-  if (!title || !description || !url) {
-    return res.status(400).json({ error: "All fields are required" });
-  }
-
-
-  res.status(201).json({
-    message: "Video created successfully",
-    data: { title, description, url },
-  });
-});
-
+app.use("/api/v1", userRouter);
+app.use("/api/v1", postRouter);
 
 connectDB();
 
