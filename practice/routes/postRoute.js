@@ -1,15 +1,28 @@
+import express from "express";
+import { Post } from "../models/Post.js";
 
-const express = require("express");
 const router = express.Router();
-const Post = require("../models/model.js");
 
-router.get("/", async (req, res) => {
+// Route to create a new post
+router.post("/posts", async (req, res) => {
   try {
-    const posts = await Post.find();
+    const { title, content } = req.body;
+    const newPost = new Post({ title, content });
+    await newPost.save();
+    res.status(201).json(newPost);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+// Route to fetch and rank posts
+router.get("/posts", async (req, res) => {
+  try {
+    const posts = await Post.find({});
     const rankedPosts = posts.sort((a, b) => {
-      const aHasAI = a.content.toLowerCase().includes("ai");
-      const bHasAI = b.content.toLowerCase().includes("ai");
-      return bHasAI - aHasAI; 
+      const aContainsAI = a.content.toLowerCase().includes("ai");
+      const bContainsAI = b.content.toLowerCase().includes("ai");
+      return bContainsAI - aContainsAI; // Rank posts with "AI" higher
     });
     res.status(200).json(rankedPosts);
   } catch (error) {
@@ -17,17 +30,4 @@ router.get("/", async (req, res) => {
   }
 });
 
-
-router.post("/", async (req, res) => {
-  const { title, content } = req.body;
-
-  try {
-    const newPost = new Post({ title, content });
-    await newPost.save();
-    res.status(201).json(newPost);
-  } catch (error) {
-    res.status(400).json({ message: error.message });
-  }
-});
-
-module.exports = router;
+export default router;
