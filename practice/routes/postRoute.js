@@ -5,6 +5,6 @@ import { authorization } from "../middlewares/auth.js";
 const postRouter = express.Router();
 
 postRouter.post("/", authorization, createPost);
-postRouter.get("/practice", sortfetch);
+postRouter.get("/display", sortfetch);
 
 export default postRouter;
