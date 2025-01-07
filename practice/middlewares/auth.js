@@ -1,18 +1,16 @@
 import jwt from "jsonwebtoken";
 
-export const authorization = (req, res, next) => {
-  const token = req.cookies?.token; // Safely access token from cookies
+export const authorization = (req,res,next)=>{
+    const token = req.cookies.access_token;
 
-  if (!token) {
-    return res.status(401).json({ message: "Unauthorized access. Token required." });
-  }
-
-  try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    req.user = decoded.id; // Attach user ID to the request object
-    next();
-  } catch (error) {
-    console.error("JWT Error:", error.message);
-    res.status(401).json({ message: "Invalid or expired token." });
-  }
-};
+    if(!token){
+        return res.status(403);
+    }
+    try {
+        const data = jwt.verify(token,process.env.SECRET_KEY);
+        req.user = data.id;
+        return next();
+    } catch (error) {
+        console.debug(error);
+    }
+}
