@@ -1,6 +1,7 @@
 import { Post } from "../models/model.js";
 import { User } from "../models/user.js";
 
+// Create Post Controller
 export const createPost = async (req, res) => {
   try {
     const { title, content, category } = req.body;
@@ -38,20 +39,19 @@ export const createPost = async (req, res) => {
   }
 };
 
+// Fetch and Sort Posts
 export const sortfetch = async (req, res) => {
   try {
     // MongoDB queries to prioritize posts containing "AI"
-    const queryAI = { content: /.*\bai\b.*/i }; // Matches "AI" in content
-    const queryNonAI = { content: { $not: /.*\bai\b.*/i } }; // Matches non-"AI" content
+    const postsWithAI = await Post.find({ content: { $regex: /\bai\b/i } }).exec(); // "AI" priority
+    const postsWithoutAI = await Post.find({ content: { $not: /\bai\b/i } }).exec(); // Others
 
-    // Fetch and merge results
-    const postsWithAI = await Post.find(queryAI).exec();
-    const postsWithoutAI = await Post.find(queryNonAI).exec();
-    const sortedPosts = postsWithAI.concat(postsWithoutAI);
+    // Merge results: AI posts first
+    const sortedPosts = [...postsWithAI, ...postsWithoutAI];
 
     res.status(200).json(sortedPosts);
   } catch (error) {
-    console.error(error);
+    console.error("Error fetching posts:", error);
     res.status(500).json({ message: "Failed to fetch posts.", error: error.message });
   }
 };
